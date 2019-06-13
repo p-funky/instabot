@@ -1,5 +1,5 @@
 #### WHAT IS THIS ALL ABOUT?
-This is a simple instagram bot that logs in to instagram and sends a sample message to the first connect that follows you and that you are also following.
+This is a simple instagram bot that logs in to instagram and sends a message (if possible considering you cannot send a message to a user you are not following) to a user you search for.
 
 #### PREQUISITES
 Must have Nodejs and npm installed. If note, visit https://nodejs.org/en/download/ to install. It comes with node and npm.
@@ -21,9 +21,12 @@ before running "`npm install`" again.
 
 You can then run "`npm config set puppeteer_skip_chromium_download true`" after successful download of Chrome into your project directory.
 
-Step 3 -> Open the `.env` file and put in username & password just as in example file `.env.sample`
+Step 3 -> Create a `.env` file in the root and put in username & password just as in example file `.env.sample`
 
-Step 4 -> In your terminal, run:
+Step 4 -> Go to the `index.js` file and type in the handle of the user you want to send a message on line 4
+
+Step 5 -> Still in the `index.js` file, type in the message you want to send on line 5
+
+Step 6 -> In your terminal, run:
 ```bash
 node index.js
-```

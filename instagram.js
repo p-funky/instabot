@@ -4,16 +4,14 @@ const _data = require('./lib');
 
 const BASE_URL = 'https://instagram.com';
 
-const MESSAGE = 'Yinka Alabi sent this test message. Kindly ignore.';
-
 const elements = {
   loginButton1: '//a[contains(text(), "Log in")]',
   username: 'input[name="username"]',
   password: 'input[name="password"]',
   loginButton2: '//button/div[contains(text(), "Log In")]',
-  profile: 'a > span[aria-label="Profile"]',
-  followers: 'li > a[href*="/followers"]',
-  following: '//div/button[contains(text(), "Following")]',
+  searchButton: 'a > span[aria-label="Search & Explore"]',
+  searchBar: 'input[placeholder="Search"]',
+  firstSearchResult: 'ul > li:first-child > a',
   messageButton: '//div/button[contains(text(), "Message")]',
   textArea: 'textArea',
   sendMessage: '//div/button[contains(text(), "Send")]'
@@ -45,41 +43,39 @@ const instagram = {
     await instagram.page.type(elements.password, password, { delay: 50 });
 
     const loginButton2 = await instagram.page.$x(elements.loginButton2);
-    await loginButton2[0].click();
+    await Promise.all([
+      loginButton2[0].click(),
+      instagram.page.waitForNavigation({ waitUntil: 'networkidle2' })
+    ]);
   },
 
-  navigateToExampleProfile: async () => {
-    const profilePage = await instagram.page.waitFor(elements.profile);
-
-    await instagram.page.waitFor(3000);
-
+  navigateToExampleProfile: async userhandle => {
     await instagram.page.evaluate(() => {
       const cancelHomeScreenDialog = document.evaluate('//div/button[contains(text(), "Cancel")]', document, null, XPathResult.ANY_TYPE, null);
       const cancelButton = cancelHomeScreenDialog.iterateNext();
       cancelButton && cancelButton.click();
     });
 
-    await profilePage.click();
-    await instagram.page.waitFor(2500);
+    const searchButton = await instagram.page.waitFor(elements.searchButton);
+    await Promise.all([
+      searchButton.click(),
+      instagram.page.waitForNavigation({ waitUntil: 'networkidle0' })
+    ]);
 
-    const followers = await instagram.page.$(elements.followers);
-    await followers.click();
-    await instagram.page.waitFor(3000);
+    await instagram.page.type(elements.searchBar, userhandle);
 
-    await instagram.page.evaluate(() => {
-      const following = document.evaluate('//div/button[contains(text(), "Following")]', document, null, XPathResult.ANY_TYPE, null);
-      const firstFollowing = following.iterateNext();
-      firstFollowing && firstFollowing.parentNode.parentNode.firstChild.firstChild.lastChild.click();
-    });
+    await instagram.page.waitFor(2000);
+    const searchResult = await instagram.page.waitFor(elements.firstSearchResult);
+    await searchResult.click();
   },
 
-  sendSampleMessage: async () => {
+  sendSampleMessage: async text => {
     await instagram.page.waitFor(1000);
     const messageButton = await instagram.page.waitFor(elements.messageButton);
     await messageButton.click();
 
     await instagram.page.waitFor(3000);
-    await instagram.page.type(elements.textArea, MESSAGE, { delay: 50 });
+    await instagram.page.type(elements.textArea, text, { delay: 50 });
     const sendButton = await instagram.page.$x(elements.sendMessage);
     await sendButton[0].click();
     await instagram.page.waitFor(1000);
@@ -93,7 +89,6 @@ const instagram = {
       console.log(err);
     });
     await instagram.page.waitFor(1000);
-    debugger;
   }
 };
 
