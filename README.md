@@ -23,7 +23,13 @@ You can then run "`npm config set puppeteer_skip_chromium_download true`" after 
 
 Step 3 -> Create a `.env` file in the root and put in username & password just as in example file `.env.sample`
 
-Step 4 -> Go to the `index.js` file and type in the handle of the user you want to send a message on line 4
+Step 4 -> Go to the `index.js` file and type in the handle of the user you want to send a message on line 4 or You can enter the user handle & message as arguments from the command line when running the app and skip `Step 4` and `Step 5`
+e.g 
+
+
+```
+    node index.js --msg='Hello, World' --userHandle='blackjack'
+```
 
 Step 5 -> Still in the `index.js` file, type in the message you want to send on line 5
 
