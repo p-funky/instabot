@@ -1,8 +1,11 @@
 const dotenv = require('dotenv');
+const minimist = require('minimist');
 const instagrambot = require('./instagram');
 
-const userhandle = 'gbenga_ps'
-const MESSAGE = 'Yinka Alabi sent this test message. Kindly ignore.';
+const cli_args = minimist(process.argv.slice(2));
+
+const userhandle = cli_args['userHandle'] || 'gbenga_ps';
+const MESSAGE = cli_args['msg'] || 'Yinka Alabi sent this test message. Kindly ignore.';
 
 dotenv.config();
 
