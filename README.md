@@ -1,7 +1,7 @@
 #### WHAT IS THIS ALL ABOUT?
 This is a simple instagram bot that logs in to instagram and sends a message (if possible considering you cannot send a message to a user you are not following) to a user you search for.
 
-#### PREQUISITES
+#### PREREQUISITES
 Must have Nodejs and npm installed. If note, visit https://nodejs.org/en/download/ to install. It comes with node and npm.
 
 #### HOW TO RUN THIS PROJECT
